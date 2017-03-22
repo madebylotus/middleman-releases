@@ -29,6 +29,6 @@ Configuration options can be defined in your `config.rb` file.
 
 ```ruby
 activate :releases do |releases|
-  # releases.option = true
+  # releases.layout = 'custom_layout'
 end
 ```

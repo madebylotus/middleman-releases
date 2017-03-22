@@ -1,17 +1,17 @@
 module Releases
   class Instance
-    attr_accessor :resource, :tag
+    attr_accessor :controller, :resource, :tag
 
-    def self.from(resource)
+    def self.from(resource, controller)
       tag = resource.data[:tag]
 
-      new({
-        resource: resource,
-        tag: tag
-      })
+      new(controller, resource, tag: tag)
     end
 
-    def initialize(attributes = {})
+    def initialize(controller, resource, attributes = {})
+      @controller = controller
+      @resource = resource
+
       attributes.each do |key, value|
         self.public_send("#{ key }=", value)
       end
