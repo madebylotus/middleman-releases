@@ -33,7 +33,7 @@ module Releases
         end
       end
 
-      resources + [ latest_release_resource ]
+      resources + [ latest_release_resource ] + latest_release_asset_resources
     end
 
     helpers do
@@ -54,6 +54,24 @@ module Releases
       Middleman::Sitemap::ProxyResource.new(app.sitemap, "#{ options[:releases_dir] }/latest/index.html", latest_release.path).tap do |p|
         layout = options[:layout].to_s
         p.add_metadata(options: { layout: layout })
+      end
+    end
+
+    def assets_for_release(release)
+      dir = latest_release.path.gsub('index.html', '')
+
+      app.sitemap.resources.select do |resource|
+        resource.path.start_with?(dir) && !resource.path.end_with?('index.html')
+      end
+    end
+
+    def latest_release_asset_resources
+      return [] unless latest_release
+
+      assets = assets_for_release(latest_release)
+      assets.map do |asset|
+        target = asset.path.gsub("/#{ latest_release.tag }/", '/latest/')
+        Middleman::Sitemap::ProxyResource.new(app.sitemap, target, asset.path)
       end
     end
   end
