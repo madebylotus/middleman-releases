@@ -35,6 +35,10 @@ module Releases
         Releases::Instance.from(current_resource, self)
       end
 
+      def releases
+        releases_controller.releases
+      end
+
       def latest_release
         releases.first
       end
