@@ -53,7 +53,7 @@ module Releases
 
       Middleman::Sitemap::ProxyResource.new(app.sitemap, "#{ options[:releases_dir] }/latest/index.html", latest_release.path).tap do |p|
         layout = options[:layout].to_s
-        p.add_metadata(options: { layout: layout })
+        p.add_metadata(options: { layout: layout }, locals: { latest: true })
       end
     end
 
