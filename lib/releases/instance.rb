@@ -1,6 +1,10 @@
 module Releases
   class Instance
+    extend Forwardable
+
     attr_accessor :controller, :resource, :tag
+
+    def_delegators :resource, :path, :data
 
     def self.from(resource, controller)
       tag = resource.data[:tag]
@@ -15,10 +19,6 @@ module Releases
       attributes.each do |key, value|
         self.public_send("#{ key }=", value)
       end
-    end
-
-    def data
-      resource.data
     end
 
     def title

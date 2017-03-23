@@ -3,6 +3,8 @@ module Releases
     option :layout, 'release', 'Layout for rendering an individual release'
     option :releases_dir, 'releases', 'Directory containing releases'
 
+    expose_to_template :releases, :latest_release
+
     def initialize(app, options_hash={}, &block)
       super
     end
@@ -13,6 +15,10 @@ module Releases
 
     def releases
       @_releases.sort_by(&:date).reverse
+    end
+
+    def latest_release
+      releases.first
     end
 
     def manipulate_resource_list(resources)
@@ -26,6 +32,8 @@ module Releases
           @_releases << Instance.from(resource, self)
         end
       end
+
+      resources + [ latest_release_resource ]
     end
 
     helpers do
@@ -36,13 +44,16 @@ module Releases
       def current_release
         Releases::Instance.from(current_resource, self)
       end
+    end
 
-      def releases
-        releases_controller.releases
-      end
+    private
 
-      def latest_release
-        releases.first
+    def latest_release_resource
+      return unless latest_release
+
+      Middleman::Sitemap::ProxyResource.new(app.sitemap, "#{ options[:releases_dir] }/latest/index.html", latest_release.path).tap do |p|
+        layout = options[:layout].to_s
+        p.add_metadata(options: { layout: layout })
       end
     end
   end
