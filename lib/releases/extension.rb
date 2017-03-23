@@ -1,6 +1,7 @@
 module Releases
   class Extension < ::Middleman::Extension
     option :layout, 'release', 'Layout for rendering an individual release'
+    option :releases_dir, 'releases', 'Directory containing releases'
 
     def initialize(app, options_hash={}, &block)
       super
@@ -16,7 +17,7 @@ module Releases
 
     def manipulate_resource_list(resources)
       resources.each do |resource|
-        if resource.path.start_with?('releases/')
+        if resource.path.start_with?("#{ options.releases_dir }/")
           layout = resource.metadata[:options].fetch(:layout, options[:layout]).to_s
           resource.add_metadata(options: { layout: layout })
 
