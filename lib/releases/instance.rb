@@ -4,7 +4,7 @@ module Releases
 
     attr_accessor :controller, :resource, :tag
 
-    def_delegators :resource, :path, :data
+    def_delegators :resource, :path, :url, :data
 
     def self.from(resource, controller)
       tag = resource.data[:tag]
