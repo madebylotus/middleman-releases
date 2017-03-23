@@ -17,18 +17,30 @@ module Releases
       end
     end
 
+    def data
+      resource.data
+    end
+
     def title
-      resource.data[:title].presence || tag
+      data[:title].presence || tag
     end
 
     def body
       resource.render(layout: false)
     end
 
+    def matrix
+      data.fetch(:versions, {})
+    end
+
+    def version
+      tag.gsub("v", "")
+    end
+
     def date
       return @_date if @_date
 
-      frontmatter_date = resource.data['date']
+      frontmatter_date = data['date']
 
       # First get the date from frontmatter
       if frontmatter_date.is_a? Time
