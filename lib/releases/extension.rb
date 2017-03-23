@@ -16,6 +16,8 @@ module Releases
     end
 
     def manipulate_resource_list(resources)
+      @_releases = []
+
       resources.each do |resource|
         if resource.path =~ %r{#{options[:releases_dir]}\/v.*\/index\.html}
           layout = resource.metadata[:options].fetch(:layout, options[:layout]).to_s
