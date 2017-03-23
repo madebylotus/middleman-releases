@@ -17,7 +17,7 @@ module Releases
 
     def manipulate_resource_list(resources)
       resources.each do |resource|
-        if resource.path.start_with?("#{ options.releases_dir }/")
+        if resource.path.match(%r{#{ options.releases_dir }/v.*\.html})
           layout = resource.metadata[:options].fetch(:layout, options[:layout]).to_s
           resource.add_metadata(options: { layout: layout })
 
