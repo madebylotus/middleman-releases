@@ -1,6 +1,7 @@
 module Releases
   class Instance
     extend Forwardable
+    include Padrino::Helpers::FormatHelpers
 
     attr_accessor :controller, :resource, :tag
 
@@ -27,6 +28,10 @@ module Releases
 
     def body
       resource.render(layout: false)
+    end
+
+    def teaser
+      truncate_words(strip_tags(body), length: 15)
     end
 
     def matrix
