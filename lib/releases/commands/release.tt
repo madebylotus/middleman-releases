@@ -1,0 +1,7 @@
+---
+title: <%= @tag %>
+tag: <%= @tag %>
+date: <%= @date %>
+---
+
+Provide some *markdown* release notes.
