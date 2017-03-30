@@ -2,6 +2,7 @@ module Releases
   class Extension < ::Middleman::Extension
     option :layout, 'release', 'Layout for rendering an individual release'
     option :releases_dir, 'releases', 'Directory containing releases'
+    option :new_release_template, File.expand_path('../commands/release.tt', __FILE__), 'Path (relative to project root) to an ERb template that will be used to generate new software releases from the "middleman release" command.'
 
     expose_to_template :releases, :latest_release
 
