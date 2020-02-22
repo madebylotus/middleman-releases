@@ -42,3 +42,10 @@ activate :releases do |releases|
   # releases.new_release_template = File.expand_path('../custom_template.tt', __FILE__)
 end
 ```
+
+If your date frontmatter includes timestamps, you should also ensure a
+`Time.zone` is being set in your `config.rb`:
+
+```ruby
+Time.zone = 'America/New_York'
+```
