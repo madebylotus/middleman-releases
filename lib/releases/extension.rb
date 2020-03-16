@@ -3,6 +3,7 @@ module Releases
     option :layout, 'release', 'Layout for rendering an individual release'
     option :releases_dir, 'releases', 'Directory containing releases'
     option :new_release_template, File.expand_path('../commands/release.tt', __FILE__), 'Path (relative to project root) to an ERb template that will be used to generate new software releases from the "middleman release" command.'
+    option :time_zone, 'UTC', 'Time Zone for timestamps provided'
 
     expose_to_template :releases, :latest_release
 
@@ -12,6 +13,8 @@ module Releases
 
     def after_configuration
       @_releases = []
+
+      determine_time_zone
     end
 
     def releases
@@ -23,7 +26,7 @@ module Releases
     end
 
     def manipulate_resource_list(resources)
-      @_releases = []
+      after_configuration
 
       resources.each do |resource|
         if resource.path =~ %r{#{options[:releases_dir]}\/v.*\/index\.html}
@@ -73,6 +76,12 @@ module Releases
       assets.map do |asset|
         target = asset.path.gsub("/#{ latest_release.tag }/", '/latest/')
         Middleman::Sitemap::ProxyResource.new(app.sitemap, target, asset.path)
+      end
+    end
+
+    def determine_time_zone
+      options[:time_zone].tap do |tz|
+        Time.zone = tz if Time.zone.blank? && tz.present?
       end
     end
   end
